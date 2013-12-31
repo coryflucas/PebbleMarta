@@ -1,0 +1,17 @@
+{
+  "uuid": "f4213c6b-d793-4717-b47d-ce6c47a633f3",
+  "shortName": "Pebble Marta",
+  "longName": "Pebble Marta",
+  "companyName": "Cory Lucas",
+  "versionCode": 1,
+  "versionLabel": "1.0.0",
+  "watchapp": {
+    "watchface": false
+  },
+  "appKeys": {
+    "dummy": 0
+  },
+  "resources": {
+    "media": []
+  }
+}
