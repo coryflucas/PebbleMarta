@@ -39,14 +39,20 @@ function getTrains(response) {
 		});
 }
 
+
+var url = 'http://developer.itsmarta.com/NextTrainService/RestServiceNextTrain.svc/GetNextTrain/';
 /* 
  * This is all a little yucky, but its to shrink down the size of the message
  * we send back to the pebble.
  */
 function getTrainsForStation(stationName) {
     console.log("Getting data for " + stationName);
+    var slashIdx = stationName.indexOf('/');
+    if(slashIdx > 0) {
+    	stationName = stationName.substring(0, slashIdx);
+    }
     var req = new XMLHttpRequest();
-    req.open('GET', 'http://developer.itsmarta.com/NextTrainService/RestServiceNextTrain.svc/GetNextTrain/' + stationName, true);
+    req.open('GET', url + stationName, true);
     req.onload = function(e) {
         if (req.readyState == 4) {
             if(req.status == 200) {
