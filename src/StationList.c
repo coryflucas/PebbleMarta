@@ -5,7 +5,7 @@ static Window *window;
 static MenuLayer *menu_layer;
 
 const char *stations[] = {
-  "Airport", "Arts Center", "Ashby", "Avondale", "Bankhead", "Brookhaven", "Buckhead", "Chamblee", "Civic Center", "College Park ", "Decatur", "Dome/GWCC/Philips/CNN", "Doraville", "Dunwoody", "East Lake", "East Point", "Edgewood/Candler Park", "Five Points", "Garnett", "Georgia State", "Hamilton Holmes", "Indian Creek", "Inman Park/Reynoldstown", "Kensington", "King Memorial", "Lakewood/Ft. McPherson", "Lenox ", "Lindbergh Center", "Medical Center", "Midtown", "North Avenue", "North Springs", "Oakland City", "Peachtree Center", "Sandy Springs", "Vine City", "West End", "West Lake"
+  "Airport", "Arts Center", "Ashby", "Avondale", "Bankhead", "Brookhaven", "Buckhead", "Chamblee", "Civic Center", "College Park ", "Decatur", "Dome/GWCC/Philips/CNN", "Doraville", "Dunwoody", "East Lake", "East Point", "Edgewood/Candler Park", "Five Points", "Garnett", "Georgia State", "Hamilton", "Indian Creek", "Inman Park/Reynoldstown", "Kensington", "King Memorial", "Lakewood/Ft. McPherson", "Lenox ", "Lindbergh Center", "Medical Center", "Midtown", "North Avenue", "North Springs", "Oakland City", "Peachtree Center", "Sandy Springs", "Vine City", "West End", "West Lake"
 };
 
 static uint16_t menu_get_num_sections_callback(MenuLayer *menu_layer, void *data) {

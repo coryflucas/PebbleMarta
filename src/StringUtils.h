@@ -1,0 +1,1 @@
+char *strtok2(char *s, char delim);

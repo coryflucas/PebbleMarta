@@ -27,9 +27,14 @@ function getTrains(response) {
 	       		return train.ROUTE == route.name
 	            	&& train.DIRECTION == route.direction;
     		});
-	    
+
+    		var routeName = route.name[0];
+    		// Racist?
+    		if(route.name == 'GOLD') {
+    			routeName = 'Y';
+    		}
 		    return {
-		        name: route.name[0],
+		        name: routeName,
 		        direction: route.direction,
 		        destination: trainsForLine[0].HEAD_SIGN.trim(),
 		        waitTimes: trainsForLine.map(function(train) {
