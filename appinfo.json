@@ -9,7 +9,9 @@
     "watchface": false
   },
   "appKeys": {
-    "dummy": 0
+    "fetchTrains": 0,
+    "stationName": 1,
+    "trainInfo": 2
   },
   "resources": {
     "media": []
