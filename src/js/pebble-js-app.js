@@ -14,14 +14,20 @@ function getUniqueRoutes(response) {
 		        direction: train.DIRECTION
 		    };
 		}).sort(function(x, y) {
-		    return compare(x.name, y.name);
+		    var compareResult = compare(x.name, y.name);
+		    if(compareResult == 0) {
+		    	compareResult = compare(x.direction, y.direction);
+		    }
+		    return compareResult;
 		}).filter(function (val, idx, arry) {
+			console.log("Filter unique: " + val.name + "->" + val.direction);
 		    return idx == 0 || val.direction != arry[idx - 1].direction;
 		});
 }
 
 function getTrains(response) {
-	return getUniqueRoutes(response)
+	var routes = getUniqueRoutes(response);
+	return routes
 		.map(function(route) {
 	    	var trainsForLine = response.filter(function(train) {
 	       		return train.ROUTE == route.name
