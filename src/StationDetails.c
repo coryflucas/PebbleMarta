@@ -4,11 +4,19 @@
 #define MAX_TRAINS 16
 #define TEXT_MSGS_LEN 32
 
+typedef struct {
+  char *name;
+  char *direction;
+  char *arrival_times[3];
+} Line;
+
 static Window *window;
 static ScrollLayer *scroll_layer;
 static TextLayer *text_layers[MAX_TRAINS];
 
 static const char *station_name;
+static Line lines[4];
+
 static char train_info[TRAIN_INFO_LEN];
 static char text_messages[MAX_TRAINS][TEXT_MSGS_LEN];
 
@@ -68,33 +76,45 @@ static char *parse_direction(char *direction) {
   return direction;
 }
 
+static char *move_to_next_token(char *source, char seperator) {
+  char *pos = strchr(source, seperator);
+  if(pos) {
+    *pos = '\0';
+    pos++;
+  }
+  return pos;
+}
+
 static void handle_train_response(char *train_info) {
-  char *line_info;
-  char *next_line_info = train_info;
-  char *line_name;
-  char *direction;
-  char *arrival_time;
-  char *next_arrival_time;
+  char *pos = train_info;
+  char *arrival_pos;
 
   int i = 0;
+  int line_idx = 0;
+  int arrival_idx = 0;
+  while(pos) {
+    lines[line_idx].name = pos;
+    pos = move_to_next_token(pos, line_field_seperator);
+    lines[line_idx].direction = pos;
+    pos = move_to_next_token(pos, line_field_seperator);
 
-  line_info = next_line_info;
-  next_line_info = strtok2(line_info, line_seperator);
-  while(*line_info != '\0') {
-    line_name = line_info;
-    direction = strtok2(line_name, line_field_seperator);
-
-    next_arrival_time = strtok2(direction, line_field_seperator);
+    arrival_pos = pos;
+    pos = move_to_next_token(pos, line_seperator);
+    arrival_idx = 0;
     do {
-      arrival_time = next_arrival_time;
-      next_arrival_time = strtok2(arrival_time, arrival_seperator);
-      snprintf(text_messages[i], TEXT_MSGS_LEN, "%s line %s: %s min", parse_line_name(line_name), parse_direction(direction), arrival_time);
+      lines[line_idx].arrival_times[arrival_idx] = arrival_pos;
+      arrival_pos = move_to_next_token(arrival_pos, arrival_seperator);
+
+      snprintf(text_messages[i], TEXT_MSGS_LEN, "%s line %s: %s min",
+        parse_line_name(lines[line_idx].name),
+        parse_direction(lines[line_idx].direction),
+        lines[line_idx].arrival_times[arrival_idx]);
       layer_mark_dirty(text_layer_get_layer(text_layers[i]));
       i++;
-    } while(*next_arrival_time != '\0');
+      arrival_idx++;
+    } while(arrival_pos);
 
-    line_info = next_line_info;
-    next_line_info = strtok2(line_info, line_seperator);
+    line_idx++;
   }
 
   GRect bounds = layer_get_bounds(window_get_root_layer(window));
@@ -136,7 +156,6 @@ static void window_unload(Window *window) {
 static void in_recieved_handler(DictionaryIterator *iter, void *context) {
   APP_LOG(APP_LOG_LEVEL_DEBUG, "App message recieved");
   Tuple *train_tuple = dict_find(iter, TRAIN_INFO);
-
   if(train_tuple) {
     strncpy(train_info, train_tuple->value->cstring, TRAIN_INFO_LEN);
     handle_train_response(train_info);

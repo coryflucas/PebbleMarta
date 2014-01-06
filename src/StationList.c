@@ -5,7 +5,8 @@ static Window *window;
 static MenuLayer *menu_layer;
 
 const char *stations[] = {
-  "Airport", "Arts Center", "Ashby", "Avondale", "Bankhead", "Brookhaven", "Buckhead", "Chamblee", "Civic Center", "College Park ", "Decatur", "Dome/GWCC/Philips/CNN", "Doraville", "Dunwoody", "East Lake", "East Point", "Edgewood/Candler Park", "Five Points", "Garnett", "Georgia State", "Hamilton", "Indian Creek", "Inman Park/Reynoldstown", "Kensington", "King Memorial", "Lakewood/Ft. McPherson", "Lenox ", "Lindbergh Center", "Medical Center", "Midtown", "North Avenue", "North Springs", "Oakland City", "Peachtree Center", "Sandy Springs", "Vine City", "West End", "West Lake"
+  "Avondale", "North Avenue", "Five Points",
+  "Airport", "Arts Center", "Ashby", "Bankhead", "Brookhaven", "Buckhead", "Chamblee", "Civic Center", "College Park ", "Decatur", "Dome/GWCC/Philips/CNN", "Doraville", "Dunwoody", "East Lake", "East Point", "Edgewood/Candler Park", "Garnett", "Georgia State", "Hamilton", "Indian Creek", "Inman Park/Reynoldstown", "Kensington", "King Memorial", "Lakewood/Ft. McPherson", "Lenox ", "Lindbergh Center", "Medical Center", "Midtown", "North Springs", "Oakland City", "Peachtree Center", "Sandy Springs", "Vine City", "West End", "West Lake"
 };
 
 static uint16_t menu_get_num_sections_callback(MenuLayer *menu_layer, void *data) {
@@ -23,6 +24,10 @@ static uint16_t menu_get_num_rows_callback(MenuLayer *menu_layer, uint16_t secti
 
 static int16_t menu_get_header_height_callback(MenuLayer *menu_layer, uint16_t section_index, void *data) {
   return MENU_CELL_BASIC_HEADER_HEIGHT;
+}
+
+static int16_t menu_get_cell_height_callback(MenuLayer *menu_layer, MenuIndex *cell_index, void *data) {
+  return 24;
 }
 
 static void menu_draw_header_callback(GContext* ctx, const Layer *cell_layer, uint16_t section_index, void *data) {
@@ -60,6 +65,7 @@ static void window_load(Window *window) {
     .get_num_sections = menu_get_num_sections_callback,
     .get_num_rows = menu_get_num_rows_callback,
     .get_header_height = menu_get_header_height_callback,
+    .get_cell_height = menu_get_cell_height_callback,
     .draw_header = menu_draw_header_callback,
     .draw_row = menu_draw_row_callback,
     .select_click = menu_select_callback,
