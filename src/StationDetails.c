@@ -1,5 +1,4 @@
 #include <pebble.h>
-#include "StringUtils.h"
 #define TRAIN_INFO_LEN 256
 #define MAX_TRAINS 16
 #define TEXT_MSGS_LEN 32
