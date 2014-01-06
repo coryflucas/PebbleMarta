@@ -20,7 +20,6 @@ function getUniqueRoutes(response) {
 		    }
 		    return compareResult;
 		}).filter(function (val, idx, arry) {
-			console.log("Filter unique: " + val.name + "->" + val.direction);
 		    return idx == 0 || val.direction != arry[idx - 1].direction;
 		});
 }
@@ -57,7 +56,6 @@ var url = 'http://developer.itsmarta.com/NextTrainService/RestServiceNextTrain.s
  * we send back to the pebble.
  */
 function getTrainsForStation(stationName) {
-    console.log("Getting data for " + stationName);
     var slashIdx = stationName.indexOf('/');
     if(slashIdx > 0) {
     	stationName = stationName.substring(0, slashIdx);
@@ -84,15 +82,8 @@ function getTrainsForStation(stationName) {
     req.send(null);
 }
 
-Pebble.addEventListener("ready",
-    function(e) {
-        console.log("Hello world! - Sent from your javascript application.");
-    }
-);
-
 Pebble.addEventListener("appmessage",
 	function(e) {
-		console.log("Recieved a message");
 		if(e.payload.fetchTrains) {
 			console.log("Fetching trains for station " + e.payload.stationName);
 			getTrainsForStation(e.payload.stationName);

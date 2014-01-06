@@ -89,7 +89,6 @@ static void handle_train_response(char *train_info) {
       arrival_time = next_arrival_time;
       next_arrival_time = strtok2(arrival_time, arrival_seperator);
       snprintf(text_messages[i], TEXT_MSGS_LEN, "%s line %s: %s min", parse_line_name(line_name), parse_direction(direction), arrival_time);
-      APP_LOG(APP_LOG_LEVEL_DEBUG, text_messages[i]);
       layer_mark_dirty(text_layer_get_layer(text_layers[i]));
       i++;
     } while(*next_arrival_time != '\0');
@@ -98,17 +97,20 @@ static void handle_train_response(char *train_info) {
     next_line_info = strtok2(line_info, line_seperator);
   }
 
+  GRect bounds = layer_get_bounds(window_get_root_layer(window));
+  scroll_layer_set_content_size(scroll_layer, GSize(bounds.size.w, i * 16));
+
   for(; i < MAX_TRAINS; i++) {
     text_messages[i][0] = '\0';
   }
 }
 
 static void window_load(Window *window) {
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "Station details load");
   Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_bounds(window_layer);
 
   scroll_layer = scroll_layer_create(bounds);
+  scroll_layer_set_click_config_onto_window(scroll_layer, window);
   layer_add_child(window_layer, scroll_layer_get_layer(scroll_layer));
 
   for(int i = 0; i < MAX_TRAINS; i++) {
@@ -116,15 +118,16 @@ static void window_load(Window *window) {
     if(i == 0 ) {
       strncpy(text_messages[0], "Loading...", TEXT_MSGS_LEN);
     }
-    text_layers[i] = text_layer_create( GRect(3, i * 16, bounds.size.w, 16));
+    text_layers[i] = text_layer_create( GRect(1, i * 16, bounds.size.w - 1, 16));
     text_layer_set_text(text_layers[i], text_messages[i]);
     scroll_layer_add_child(scroll_layer, text_layer_get_layer(text_layers[i]));
-  }  
+  }
 
   fetch_trains();
 }
 
 static void window_unload(Window *window) {
+  scroll_layer_destroy(scroll_layer);
   for(int i = 0; i < MAX_TRAINS; i++) {
     text_layer_destroy(text_layers[i]);
   }
