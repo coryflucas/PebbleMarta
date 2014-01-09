@@ -7,21 +7,26 @@ function compare(x, y) {
 }
 
 function getUniqueRoutes(response) {
-	return response
-		.map(function (train) {
+	var routes = response.map(function (train) {
 		    return {
 		        name: train.ROUTE,
 		        direction: train.DIRECTION
 		    };
-		}).sort(function(x, y) {
+	});
+	routes = routes.sort(function(x, y) {
 		    var compareResult = compare(x.name, y.name);
 		    if(compareResult == 0) {
 		    	compareResult = compare(x.direction, y.direction);
 		    }
 		    return compareResult;
-		}).filter(function (val, idx, arry) {
-		    return idx == 0 || val.direction != arry[idx - 1].direction;
-		});
+	});
+	routes = routes.filter(function (val, idx, arry) {
+		    return idx == 0 ||
+		    	val.name != arry[idx - 1].name ||
+		    	val.direction != arry[idx - 1].direction
+	    	;
+	});
+	return routes;
 }
 
 function getTrains(response) {
@@ -51,7 +56,7 @@ function getTrains(response) {
 
 
 var url = 'http://developer.itsmarta.com/NextTrainService/RestServiceNextTrain.svc/GetNextTrain/';
-/* 
+/*
  * This is all a little yucky, but its to shrink down the size of the message
  * we send back to the pebble.
  */
