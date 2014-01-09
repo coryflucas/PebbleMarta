@@ -14,7 +14,7 @@ static ScrollLayer *scroll_layer;
 static TextLayer *text_layers[MAX_TRAINS];
 
 static const char *station_name;
-static Line lines[4];
+static Line lines[8];
 
 static char train_info[TRAIN_INFO_LEN];
 static char text_messages[MAX_TRAINS][TEXT_MSGS_LEN];
