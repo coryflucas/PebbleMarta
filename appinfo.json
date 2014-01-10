@@ -14,6 +14,13 @@
     "trainInfo": 2
   },
   "resources": {
-    "media": []
+    "media": [
+      {
+        "type": "png",
+        "name": "IMAGE_TRAIN",
+        "file": "images/train.png",
+        "menuIcon": true
+      }
+    ]
   }
 }
