@@ -150,6 +150,11 @@ static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuI
                        NULL);
 }
 
+static void menu_select_callback(MenuLayer *menu_layer, MenuIndex *cell_index, void *data) {
+  fetch_trains();
+  layer_set_hidden(text_layer_get_layer(loading_layer), false);
+}
+
 static void window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_bounds(window_layer);
@@ -167,6 +172,7 @@ static void window_load(Window *window) {
     .get_cell_height = menu_get_cell_height_callback,
     .draw_header = menu_draw_header_callback,
     .draw_row = menu_draw_row_callback,
+    .select_click = menu_select_callback,
   });
 
   menu_layer_set_click_config_onto_window(menu_layer, window);
